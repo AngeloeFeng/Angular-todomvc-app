@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Template • TodoMVC</title>
+  <link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+  <link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+</head>
+
+<body ng-app="todoApp" ng-controller="TodoController">
+  <section class="todoapp">
+    <header class="header">
+      <h1>todos</h1>
+      <!-- 利用 form 表单的 submit 事件，敲回车键会触发 submit 事件 -->
+      <!-- 注意：不要添加 action 属性！！！ -->
+      <form ng-submit="add()">
+        <input class="new-todo" placeholder="What needs to be done?" autofocus ng-model="taskName">
+      </form>
+    </header>
+    <!-- This section should be hidden by default and shown when there are todos -->
+    <section class="main">
+      <input class="toggle-all" type="checkbox" ng-model="isCheckedAll" ng-click="checkAll()">
+      <label for="toggle-all">Mark all as complete</label>
+      <ul class="todo-list">
+        <!-- These are here just to show the structure of the list items -->
+        <!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
+        <li ng-class="{completed: todo.isCompleted,editing:editingId === todo.id}" ng-repeat="todo in todoList track by $index">
+          <div class="view">
+            <input class="toggle" type="checkbox" ng-model="todo.isCompleted">
+            <label ng-bind="todo.name" ng-dblclick="edit(todo.id)"></label>
+            <!-- 将当前项的id作为 del方法的参数 -->
+            <button class="destroy" ng-click="del(todo.id)"></button>
+          </div>
+            <form ng-submit="editSave">
+               <input class="edit" ng-model="todo.name">
+            </form>
+        </li>
+      </ul>
+    </section>
+    <!-- This footer should hidden by default and shown when there are todos -->
+    <footer class="footer">
+      <!-- This should be `0 items left` by default -->
+      <span class="todo-count"><strong ng-bind="getCount()">0</strong> item left</span>
+      <!-- Remove this if you don't implement routing -->
+      <ul class="filters">
+        <li>
+          <a ng-class="{selected: status === undefined}"  class="selected" href="#/">All</a>
+        </li>
+        <li>
+          <a ng-class="{selected: status === false}"  href="#/active">Active</a>
+        </li>
+        <li>
+          <a ng-class="{selected: status === true}" href="#/completed">Completed</a>
+        </li>
+      </ul>
+      <!-- Hidden if no completed items are left ↓ -->
+      <button class="clear-completed" ng-click="delCompleted()" ng-show="isShow()">Clear completed</button>
+    </footer>
+  </section>
+  <footer class="info">
+    <p>Double-click to edit a todo</p>
+    <p>Created by <a href="http://todomvc.com">itcast</a></p>
+    <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+  </footer>
+  <!-- 引入angularjs文件 -->
+  <script src="./node_modules/angular/angular.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/controller.js"></script>
+  <script src="js/service.js"></script>
+</body>
+
+</html>
